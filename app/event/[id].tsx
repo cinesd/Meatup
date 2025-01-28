@@ -1,19 +1,33 @@
-import { View, Text, Image, Pressable } from 'react-native';
+import { View, Text, Image, Pressable, ActivityIndicator } from 'react-native';
 import { useLocalSearchParams, Stack } from 'expo-router';
 import dayjs from 'dayjs';
-import events from '~/assets/events.json';
+import { useState, useEffect } from 'react';
+import { supabase } from '~/utils/supabase';
 
 export default function Event() {
   const { id } = useLocalSearchParams();
-  const event = events.find((event) => event.id === id);
-  if (!event) return <Text>Event not found</Text>;
+  const [event, setEvent] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchEvent();
+  }, []);
+
+  const fetchEvent = async () => {
+    setLoading(true);
+    const { data, error } = await supabase.from('events').select('*').eq('id', id).single();
+    setEvent(data);
+    setLoading(false);
+  };
+
+  if (loading) return <ActivityIndicator size="large" color="#0000ff" />;
   return (
     <View className="flex-1 gap-3 bg-white p-4">
       <Stack.Screen options={{ title: 'Event', headerTintColor: 'black' }} />
-      <Image source={{ uri: event.image }} className="aspect-video w-full rounded-lg" />
+      <Image source={{ uri: event.image_uri }} className="aspect-video w-full rounded-lg" />
       <Text className="text-2xl font-bold">{event.title}</Text>
       <Text className=" uppercase text-amber-800">
-        {dayjs(event.datetime).format('ddd, DD MMM • HH:mm CEST')}
+        {dayjs(event.date).format('ddd, DD MMM • HH:mm CEST')}
       </Text>
       <Text className="text-lg">{event.description}</Text>
       {/* Footer */}

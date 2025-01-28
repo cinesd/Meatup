@@ -18,7 +18,7 @@ export default function EventListItems({ event }: { event: any }) {
               </Text>
               <Text className="text-sm text-gray-700">{event.location}</Text>
             </View>
-            <Image source={{ uri: event.image }} className="aspect-video w-2/5 rounded-lg" />
+            <Image source={{ uri: event.image_uri }} className="aspect-video w-2/5 rounded-lg" />
           </View>
           <View className="flex-row gap-3">
             <Text className="mr-auto text-sm text-gray-500">16 going • ICON</Text>
