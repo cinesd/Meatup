@@ -18,6 +18,7 @@ export default function Home() {
     }
     setEvents(data || []);
   };
+
   return (
     <>
       <Stack.Screen options={{ title: 'Tab One' }} />
