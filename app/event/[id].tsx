@@ -27,7 +27,7 @@ export default function Event() {
       .from('attendance')
       .select('*')
       .eq('user_id', user?.id)
-      .eq('event_id', event.id)
+      .eq('event_id', id)
       .single();
 
     setJoined(dataAttendance);
