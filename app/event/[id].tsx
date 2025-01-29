@@ -21,7 +21,6 @@ export default function Event() {
     setLoading(true);
     const { data, error } = await supabase.from('events').select('*').eq('id', id).single();
     setEvent(data);
-    setLoading(false);
 
     const { data: dataAttendance, error: errorAttendance } = await supabase
       .from('attendance')
