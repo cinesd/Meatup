@@ -31,10 +31,10 @@ export default function Home() {
       }
 
       if (data) {
-        setUsername(data.username);
-        setWebsite(data.website);
-        setAvatarUrl(data.avatar_url);
-        setFullName(data.full_name);
+        setUsername(data.username ?? '');
+        setWebsite(data.website ?? '');
+        setAvatarUrl(data.avatar_url ?? '');
+        setFullName(data.full_name ?? '');
       }
     } catch (error) {
       if (error instanceof Error) {
