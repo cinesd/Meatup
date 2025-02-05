@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '~/utils/supabase';
 import { View, Alert, TextInput, Pressable, Text, Button } from 'react-native';
 import { useAuth } from '~/context/AuthProvider';
-
+import Avatar from '~/components/Avatar';
 export default function Home() {
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState('');
@@ -66,7 +66,7 @@ export default function Home() {
         website,
         avatar_url,
         full_name,
-        updated_at: new Date(),
+        updated_at: new Date().toISOString(),
       };
 
       const { error } = await supabase.from('profiles').upsert(updates);
@@ -85,6 +85,17 @@ export default function Home() {
   return (
     <View className="flex-1 gap-3 bg-white p-5">
       <Stack.Screen options={{ title: 'Profile' }} />
+
+      <View className="items-center">
+        <Avatar
+          size={200}
+          url={avatarUrl}
+          onUpload={(url: string) => {
+            setAvatarUrl(url);
+            updateProfile({ username, website, avatar_url: url, full_name: fullName });
+          }}
+        />
+      </View>
 
       <TextInput
         editable={false}
