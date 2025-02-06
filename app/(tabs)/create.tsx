@@ -4,20 +4,24 @@ import { useState } from 'react';
 import { supabase } from '~/utils/supabase';
 import { useAuth } from '~/context/AuthProvider';
 import { router } from 'expo-router';
+import Avatar from '~/components/Avatar';
+
 export default function CreateEvent() {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-
+  const [imageUrl, setImageUrl] = useState('');
   const { user } = useAuth();
 
   const createEvent = async () => {
     setLoading(true);
     const { data, error } = await supabase
       .from('events')
-      .insert([{ title, description, date: date.toISOString(), user_id: user?.id }])
+      .insert([
+        { title, description, date: date.toISOString(), user_id: user?.id, image_uri: imageUrl },
+      ])
       .select()
       .single(); // Returns: { data: { id: 1, title: "My Event", ... } }
     //Example without .single():
@@ -35,6 +39,15 @@ export default function CreateEvent() {
 
   return (
     <View className="flex-1 gap-4 bg-white p-5">
+      <View className="items-center">
+        <Avatar
+          size={200}
+          url={imageUrl}
+          onUpload={(url: string) => {
+            setImageUrl(url);
+          }}
+        />
+      </View>
       <TextInput
         placeholder="Title"
         value={title}

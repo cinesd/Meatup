@@ -6,7 +6,7 @@ import { Text, View, Image, Pressable, ActivityIndicator } from 'react-native';
 import { useAuth } from '~/context/AuthProvider';
 import { Attendance, Event } from '~/types/db';
 import { supabase } from '~/utils/supabase';
-
+import SupaImage from '~/components/SupaImage';
 export default function EventPage() {
   const { id } = useLocalSearchParams();
 
@@ -22,14 +22,18 @@ export default function EventPage() {
 
   const fetchEvent = async () => {
     setLoading(true);
-    const { data, error } = await supabase.from('events').select('*').eq('id', id).single();
+    const { data, error } = await supabase
+      .from('events')
+      .select('*')
+      .eq('id', parseInt(id as string))
+      .single();
     setEvent(data);
 
     const { data: attendanceData } = await supabase
       .from('attendance')
       .select('*')
-      .eq('user_id', user.id)
-      .eq('event_id', id)
+      .eq('user_id', user?.id ?? '')
+      .eq('event_id', parseInt(id as string))
       .single();
     setAttendance(attendanceData);
 
@@ -39,7 +43,7 @@ export default function EventPage() {
   const joinEvent = async () => {
     const { data, error } = await supabase
       .from('attendance')
-      .insert({ user_id: user.id, event_id: event.id })
+      .insert({ user_id: user?.id ?? '', event_id: parseInt(id as string) })
       .select()
       .single();
 
@@ -58,7 +62,7 @@ export default function EventPage() {
     <View className="flex-1 gap-3 bg-white p-3">
       <Stack.Screen options={{ title: 'Event', headerTintColor: 'black' }} />
 
-      <Image source={{ uri: event.image_uri }} className="aspect-video w-full rounded-lg" />
+      <SupaImage path={event.image_uri ?? ''} className="aspect-video w-full rounded-lg" />
 
       <Text className="text-3xl font-bold" numberOfLines={2}>
         {event.title}
