@@ -20,7 +20,14 @@ export default function CreateEvent() {
     const { data, error } = await supabase
       .from('events')
       .insert([
-        { title, description, date: date.toISOString(), user_id: user?.id, image_uri: imageUrl },
+        {
+          title,
+          description,
+          date: date.toISOString(),
+          user_id: user?.id,
+          image_uri: imageUrl,
+          location_point: 'POINT(2.3 48.6)',
+        },
       ])
       .select()
       .single(); // Returns: { data: { id: 1, title: "My Event", ... } }
