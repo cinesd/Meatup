@@ -5,6 +5,7 @@ import { supabase } from '~/utils/supabase';
 import { useAuth } from '~/context/AuthProvider';
 import { router } from 'expo-router';
 import Avatar from '~/components/Avatar';
+import AdressAutoComplete from '~/components/AdressAutoComplete';
 
 export default function CreateEvent() {
   const [date, setDate] = useState(new Date());
@@ -89,6 +90,7 @@ export default function CreateEvent() {
           setOpen(false);
         }}
       />
+      <AdressAutoComplete />
       <Pressable
         onPress={() => createEvent()}
         disabled={loading}
