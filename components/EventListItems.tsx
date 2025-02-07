@@ -41,7 +41,7 @@ export default function EventListItems({ event }: { event: any }) {
           </View>
           <View className="flex-row gap-3">
             <Text className="mr-auto text-sm text-gray-500">
-              {numberOfAttendees} going • {Math.round(event.dist_meters / 1000)}km away
+              {numberOfAttendees} going • {Math.round(event.dist_meters / 1000)} km away
             </Text>
             <Feather name="share" size={20} color="black" />
             <Feather name="bookmark" size={20} color="black" />
